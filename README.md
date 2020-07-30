@@ -37,6 +37,36 @@ HyperLogLog.estimateCount()
 ```
 HyperLogLog.union(HyperLogLog2)
 ```
+
+#### Простой пример чтения из файла:
+```
+import hash.MurmurHash3
+import java.io.*
+
+
+fun main(args: Array<String>) {
+    var hash: Long;
+    var hll = HyperLogLog(18);
+
+    try {
+        val file = File("C:\\Users\\user_name\\Downloads\\ip_addresses\\ip_addresses")
+        val fr = FileReader(file)
+        val reader = BufferedReader(fr)
+        var line = reader.readLine()
+        while (line != null) {
+            hash = MurmurHash3.hash64(line.toByteArray())
+            hll.add(hash)
+            line = reader.readLine()
+        }
+    } catch (e: FileNotFoundException) {
+        e.printStackTrace()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+    println(hll.estimateCount())
+}
+```
+
 ##### P.S
 Данная реализация работает только с 64-х битными значениями. 
 
